@@ -23,16 +23,55 @@ function harvest_all_colname(experiments::DataStructures.OrderedDict{String,Summ
     return all_names
 end
 
+function check_sampledata(sampledata)
+    if size(sampledata)[2] < 0 || names(sampledata)[1] != "name"
+        throw(ErrorException("'sampledata' should contain at least 1 column named 'name'"))
+    end
+
+    samp_names = sampledata[!,1]
+    if !isa(samp_names, Vector{String})
+        throw(ErrorException("'name' column of 'sampledata' should be a string vector"))
+    end
+
+    if !allunique(samp_names)
+        throw(ErrorException("'name' column of 'sampledata' should contain unique values"))
+    end
+end
+
+function check_samplemap(samplemap) 
+    expected = ["sample", "experiment", "colname"]
+    if size(samplemap)[2] != 3 || names(samplemap) != expected
+        throw(ErrorException("'samplemap' should contain columns 'sample', 'experiment' and 'colname'"))
+    end
+
+    for field in expected
+        if !isa(samplemap[!,field], Vector{String})
+            throw(ErrorException("'" * field * "' column of 'samplemap' should be a string vector"))
+        end
+    end
+
+    if (!allunique(eachrow(samplemap)))
+        throw(ErrorException("'samplemap' should not contain duplicate rows"))
+    end
+end
+
+
 """
 The `MultiAssayExperiment` class is a Bioconductor container for multimodal studies.
 This is basically a list of `SummarizedExperiment` objects, each of which represents a particular experimental modality.
 A mapping table specifies the relationships between the columns of each `SummarizedExperiment` and a conceptual "sample",
 assuming that each sample has data for zero, one or multiple modalities. 
 A sample can be defined as anything from a cell line culture to an individual patient, depending on the context.
+
+This implementation makes a few changes from the original Bioconductor implementation.
+We do not consider the `MultiAssayExperiment` to contain any "columns", as this was unnecessarily confusing.
+The previous `colData` field has thus been renamed to `sampledata`, to reflect the fact that we are operating on samples.
+We are also much more relaxed about harmonization between the experiments, sample mapping, and sample data -
+or more specifically, we don't harmonize at all, allowing greater flexibility in storage and manipulation.
 """
 mutable struct MultiAssayExperiment
     experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}
-    coldata::DataFrames.DataFrame
+    sampledata::DataFrames.DataFrame
     samplemap::DataFrames.DataFrame
     metadata::Dict{String,Any}
 
@@ -90,7 +129,7 @@ mutable struct MultiAssayExperiment
             fill!(tmp, key)
             append!(all_exp, tmp)
 
-            cd = coldata(val)
+            cd = SummarizedExperiments.coldata(val)
             curnames = cd[!,"name"]
             append!(all_samp, curnames)
         end
@@ -105,7 +144,7 @@ mutable struct MultiAssayExperiment
     end
 
     """
-        MultiAssayExperiment(experiments, coldata, samplemap, metadata = Dict{String,Any}())
+        MultiAssayExperiment(experiments, sampledata, samplemap, metadata = Dict{String,Any}())
 
     Creates a new `MultiAssayExperiment` from its components.
 
@@ -113,14 +152,14 @@ mutable struct MultiAssayExperiment
     Each `SummarizedExperiment` may contain any number and identity for the rows.
     However, the column names must be non-nothing and unique within each object.
 
-    Each row of `coldata` corresponds to a conceptual sample.
+    Each row of `sampledata` corresponds to a conceptual sample.
     The first column should be called `name` and contain the names of the samples in a `Vector{String}`.
     Sample names are arbitrary but should be unique.
     Any number and type of other columns may be provided, usually containing sample-level annotations.
 
     The `samplemap` table is expected to have 3 `Vector{String}` columns - `sample`, `experiment` and `colname` -
     specifying the correspondence between each conceptual sample and the columns of a particular `SummarizedExperiment`.
-    Values in the `sample` column will be cross-referenced to values in the `name` column of the `coldata`;
+    Values in the `sample` column will be cross-referenced to values in the `name` column of the `sampledata`;
     values in the `experiment` column will be cross-referenced to the keys of `experiments`;
     and the `colname` column will be cross-referenced to the column names of each `SummarizedExperiment`.
     Note that values in the columns need not have a 1:1 match to their cross-referenced target; 
@@ -157,48 +196,19 @@ mutable struct MultiAssayExperiment
     """
     function MultiAssayExperiment(
             experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment},
-            coldata::DataFrames.DataFrame,
+            sampledata::DataFrames.DataFrame,
             samplemap::DataFrames.DataFrame,
             metadata::Dict{String,Any} = Dict{String,Any}()
         )
 
-        # Checking the coldata.
-        if size(coldata)[2] < 0 || names(coldata)[1] != "name"
-            throw(ErrorException("'coldata' should contain at least 1 column named 'name'"))
-        end
-
-        samp_names = coldata[!,1]
-        if !isa(samp_names, Vector{String})
-            throw(ErrorException("'name' column of 'coldata' should be a string vector"))
-        end
-
-        samp_names_searchable = DataStructures.OrderedSet{String}(samp_names)
-        if length(samp_names_searchable) != length(samp_names)
-            throw(ErrorException("'name' column of 'coldata' should contain unique values"))
-        end
-
-        # Checking the experiment names.
-        all_colname = harvest_all_colname(experiments)
-
-        # Checking the samplemap.
-        expected = ["sample", "experiment", "colname"]
-        if size(samplemap)[2] != 3 || names(samplemap) != expected
-            throw(ErrorException("'samplemap' should contain columns 'sample', 'experiment' and 'colname'"))
-        end
-
-        if (!allunique(eachrow(samplemap)))
-            throw(ErrorException("'samplemap' should not contain duplicate rows"))
-        end
-
-        for field in expected
-            if !isa(samplemap[!,field], Vector{String})
-                throw(ErrorException("'" * field * "' column of 'samplemap' should be a string vector"))
-            end
-        end
+        # Running through sanity checks.
+        check_sampledata(sampledata)
+        harvest_all_colname(experiments)
+        check_samplemap(samplemap)
 
         new(
             experiments,
-            coldata,
+            sampledata,
             samplemap,
             metadata
         )
