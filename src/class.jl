@@ -9,8 +9,8 @@ function harvest_all_colname(experiments::DataStructures.OrderedDict{String,Summ
         cd = SummarizedExperiments.coldata(val)
         curnames = cd[!,"name"]
 
-        if isa(curnames, Vector{Nothing})
-            throw(ErrorException("nothing names detected for experiment '" * key * "'"))
+        if !isa(curnames, AbstractVector{<:AbstractString})
+            throw(ErrorException("'name' column should only contain strings in column data of experiment '" * key * "'"))
         end
         if !allunique(curnames)
             throw(ErrorException("column names in experiment '" * key *"' must be unique"))
@@ -29,7 +29,7 @@ function check_sampledata(sampledata)
     end
 
     samp_names = sampledata[!,1]
-    if !isa(samp_names, Vector{String})
+    if !isa(samp_names, AbstractVector{<:AbstractString})
         throw(ErrorException("'name' column of 'sampledata' should be a string vector"))
     end
 
@@ -45,7 +45,7 @@ function check_samplemap(samplemap)
     end
 
     for field in expected
-        if !isa(samplemap[!,field], Vector{String})
+        if !isa(samplemap[!,field], AbstractVector{<:AbstractString})
             throw(ErrorException("'" * field * "' column of 'samplemap' should be a string vector"))
         end
     end
@@ -75,7 +75,7 @@ mutable struct MultiAssayExperiment
     samplemap::DataFrames.DataFrame
     metadata::Dict{String,Any}
 
-    """
+    @doc """
         MultiAssayExperiment()
 
     Creates an empty `MultiAssayExperiment` object.
@@ -96,7 +96,7 @@ mutable struct MultiAssayExperiment
         )
     end
 
-    """
+    @doc """
         MultiAssayExperiment(experiments)
 
     Creates an `MultiAssayExperiment` object from a set of `experiments`.
@@ -143,7 +143,7 @@ mutable struct MultiAssayExperiment
         )
     end
 
-    """
+    @doc """
         MultiAssayExperiment(experiments, sampledata, samplemap, metadata = Dict{String,Any}())
 
     Creates a new `MultiAssayExperiment` from its components.
