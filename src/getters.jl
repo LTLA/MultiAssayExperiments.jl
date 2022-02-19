@@ -33,9 +33,7 @@ or a string specifying the name of the desired experiment.
 If `i` is not specified, it defaults to the first experiment in `x`.
 
 If `sampledata = true`, we attempt to add the sample data of `x` to the `coldata` of the returned `SummarizedExperiment`.
-This is done by subsetting `sampledata(x)` based on sample mapping to the columns of the returned `SummarizedExperiment`.
-Note that this may not be possible if there are columns of the `SummarizedExperiment` that are not present in the sample mapping,
-in which case an error is raised - use [`dropunused`](@ref) in that case.
+This is done by subsetting `sampledata(x)` based on sample mapping to the columns of the returned `SummarizedExperiment` - see [`expandsampledata`](@ref) for more details.
 If there are columns in the `sampledata(x)` and the `coldata` of the `SummarizedExperiment` with the same name but different values,
 the former are omitted with a warning.
 
@@ -72,7 +70,7 @@ julia> experiment(x, "foo", sampledata = true) # add sample data
 ```
 """
 function experiment(x::MultiAssayExperiment; sampledata = false)
-    return experiment(x, 1, sampledata = sampledata)
+    return experiment(x, 1; sampledata = sampledata)
 end
 
 function safely_add_columns!(host, other, experiment)
@@ -101,7 +99,7 @@ function experiment(x::MultiAssayExperiment, i::Int; sampledata = false)
             if !sampledata
                 return val
             else
-                sd = extractsampledata(x, key, coldata(val)[!,"name"])
+                sd = expandsampledata(x, key)
                 val2 = copy(val)
                 cd = copy(SummarizedExperiments.coldata(val2))
                 safely_add_columns!(cd, sd, key)
@@ -119,7 +117,7 @@ function experiment(x::MultiAssayExperiment, i::String; sampledata = false)
     if !sampledata
         return val
     else
-        sd = extractsampledata(x, i, SummarizedExperiments.coldata(val)[!,"name"])
+        sd = expandsampledata(x, i)
         val2 = copy(val)
         cd = copy(SummarizedExperiments.coldata(val2))
         safely_add_columns!(cd, sd, i)
