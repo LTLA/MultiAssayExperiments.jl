@@ -5,4 +5,5 @@ include("exampleobject.jl")
 include("expandsampledata.jl")
 include("getters.jl")
 include("setters.jl")
+include("filtersamplemap.jl")
 end # module
