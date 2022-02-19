@@ -82,7 +82,13 @@ mutable struct MultiAssayExperiment
 
     # Examples
     ```jldoctest
-    julia> MultiAssayExperiment();
+    julia> using MultiAssayExperiments
+
+    julia> MultiAssayExperiment()
+    MultiAssayExperiment object
+      experiments(0):
+      sampledata(1): name
+      metadata(0):
     ```
     """
     function MultiAssayExperiment()
@@ -104,15 +110,21 @@ mutable struct MultiAssayExperiment
 
     # Examples
     ```jldoctest
-    julia> using SummarizedExperiments, DataStructures;
+    julia> using MultiAssayExperiments
 
-    julia> exp = OrderedDict{String,SummarizedExperiment}();
+    julia> import SummarizedExperiments, DataStructures
 
-    julia> exp["foo"] = exampleobject(100, 10);
+    julia> exp = DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}();
 
-    julia> exp["bar"] = exampleobject(50, 20);
+    julia> exp["foo"] = SummarizedExperiments.exampleobject(100, 10);
 
-    julia> out = MultiAssayExperiment(exp);
+    julia> exp["bar"] = SummarizedExperiments.exampleobject(50, 20);
+
+    julia> out = MultiAssayExperiment(exp)
+    MultiAssayExperiment object
+      experiments(2): foo bar
+      sampledata(1): name
+      metadata(0):
     ```
     """
     function MultiAssayExperiment(experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
@@ -170,13 +182,15 @@ mutable struct MultiAssayExperiment
 
     # Examples
     ```jldoctest
-    julia> using SummarizedExperiments, DataStructures, DataFrames;
+    julia> using MultiAssayExperiments
 
-    julia> exp = OrderedDict{String,SummarizedExperiment}();
+    julia> import SummarizedExperiments, DataStructures, DataFrames;
 
-    julia> exp["foo"] = exampleobject(100, 2);
+    julia> exp = DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}();
 
-    julia> exp["bar"] = exampleobject(50, 5);
+    julia> exp["foo"] = SummarizedExperiments.exampleobject(100, 2);
+
+    julia> exp["bar"] = SummarizedExperiments.exampleobject(50, 5);
 
     julia> cd = DataFrames.DataFrame(
                name = ["Aaron", "Michael", "Jayaram", "Sebastien", "John"],
@@ -191,7 +205,11 @@ mutable struct MultiAssayExperiment
 
     julia> using MultiAssayExperiments;
 
-    julia> out = MultiAssayExperiment(exp, cd, sm);
+    julia> out = MultiAssayExperiment(exp, cd, sm)
+    MultiAssayExperiment object
+      experiments(2): foo bar
+      sampledata(2): name disease
+      metadata(0):
     ```
     """
     function MultiAssayExperiment(

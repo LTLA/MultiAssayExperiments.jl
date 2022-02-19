@@ -62,7 +62,7 @@ julia> experiment(x, 1); # same result
 julia> experiment(x, "foo");
 
 julia> experiment(x, "foo", sampledata = true) # add sample data
-100x10 SummarizedExperiment
+100x10 SummarizedExperiments.SummarizedExperiment
   assays(3): foo bar whee
   rownames: Gene1 Gene2 ... Gene99 Gene100
   rowdata(2): name Type

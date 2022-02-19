@@ -1,0 +1,25 @@
+on:
+  push:
+    branches:
+      - master
+    tags: '*'
+  pull_request:
+
+name: Build documentation
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@latest
+      - name: Install unregistered dependencies
+        run: julia --project=docs/ -e 'using Pkg; Pkg.add(url="https://github.com/LTLA/SummarizedExperiments.jl")'
+      - name: Install registered dependencies
+        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+      - name: Build and deploy
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: julia --project=docs/ docs/make.jl

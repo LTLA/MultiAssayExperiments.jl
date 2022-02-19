@@ -106,7 +106,6 @@ julia> names(sampledata(x))
  "stuff"
 ```
 """
-
 function setsampledata!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
     check_sampledata(value)
     x.sampledata = value
