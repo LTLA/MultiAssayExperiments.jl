@@ -24,7 +24,7 @@ julia> stuff = experiments(x);
 julia> delete!(stuff, "bar");
 
 julia> collect(keys(experiments(x2)))
-1-element Array{String,1}:
+1-element Vector{String}:
  "foo"
 ```
 """
@@ -55,7 +55,7 @@ julia> x2 = deepcopy(x);
 julia> insertcols!(sampledata(x), 2, "WHEE" => 1:5); # References now point to different objects.
 
 julia> names(sampledata(x2))
-2-element Array{String,1}:
+2-element Vector{String}:
  "name"
  "disease"
 ```

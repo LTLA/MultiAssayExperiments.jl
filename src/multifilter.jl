@@ -16,6 +16,10 @@ julia> using MultiAssayExperiments
 julia> x = exampleobject();
 
 julia> multifilter!(x; samples = ["Patient2", "Patient3"], experiments = "foo")
+MultiAssayExperiment object
+  experiments(1): foo
+  sampledata(2): name disease
+  metadata(1): version
 ```
 """
 function multifilter!(x::MultiAssayExperiment; samples = nothing, experiments = nothing, colnames = nothing)
@@ -38,6 +42,10 @@ julia> using MultiAssayExperiments
 julia> x = exampleobject();
 
 julia> multifilter(x; samples = ["Patient2", "Patient3"], experiments = "foo")
+MultiAssayExperiment object
+  experiments(1): foo
+  sampledata(2): name disease
+  metadata(1): version
 ```
 """
 function multifilter(x::MultiAssayExperiment; kwargs...) 

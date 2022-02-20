@@ -79,6 +79,32 @@ setsamplemap!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
 setmetadata!(x::MultiAssayExperiment, value::Dict{String,Any})
 ```
 
+## Filtering
+
+```@docs
+filtersamplemap!(x::MultiAssayExperiment)
+```
+
+```@docs
+filtersamplemap(x::DataFrames.DataFrame)
+```
+
+```@docs
+dropunused!(x::MultiAssayExperiment)
+```
+
+```@docs
+dropunused(x::MultiAssayExperiment)
+```
+
+```@docs
+multifilter!(x::MultiAssayExperiment)
+```
+
+```@docs
+multifilter(x::MultiAssayExperiment)
+```
+
 ## Miscellaneous
 
 ```@docs
@@ -91,6 +117,10 @@ Base.deepcopy(x::MultiAssayExperiment)
 
 ```@docs
 Base.show(io::IO, x::MultiAssayExperiment)
+```
+
+```@docs
+expandsampledata(x::MultiAssayExperiment, exp::String)
 ```
 
 ```@docs

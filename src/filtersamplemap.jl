@@ -99,7 +99,7 @@ julia> using MultiAssayExperiments
 
 julia> x = exampleobject();
 
-julia> filtersamplemap!(x; samples = ["Patient1", "Patient2"])
+julia> filtersamplemap!(x; samples = ["Patient1", "Patient2"]);
 
 julia> samplemap(x)
 8×3 DataFrame
