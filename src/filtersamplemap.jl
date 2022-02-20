@@ -4,6 +4,7 @@ export filtersamplemap, filtersamplemap!
     filtersamplemap(x; samples = nothing, experiments = nothing, colnames = nothing)
 
 Filter the sample mapping `DataFrame` to the requested samples, experiments and column names.
+`x` can either be a `MultiAssayExperiment` or its [`samplemap`](@ref).
 
 If `samples` is `nothing`, it is not used for any filtering.
 Otherwise, it may be a vector or set of strings specifying the samples to retain.
@@ -78,6 +79,12 @@ function create_filter_function(input)
 
     inputset = Set(input)
     return x -> (x in inputset)
+end
+
+function filtersamplemap(x::MultiAssayExperiment; kwargs...)
+    y = copy(x)
+    filtersamplemap!(y; kwargs...)
+    return y
 end
 
 """
