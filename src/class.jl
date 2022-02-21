@@ -49,12 +49,7 @@ function check_samplemap(samplemap)
             throw(ErrorException("'" * field * "' column of 'samplemap' should be a string vector"))
         end
     end
-
-    if (!allunique(eachrow(samplemap)))
-        throw(ErrorException("'samplemap' should not contain duplicate rows"))
-    end
 end
-
 
 """
 The `MultiAssayExperiment` class is a Bioconductor container for multimodal studies.
@@ -62,6 +57,12 @@ This is basically a list of `SummarizedExperiment` objects, each of which repres
 A mapping table specifies the relationships between the columns of each `SummarizedExperiment` and a conceptual "sample",
 assuming that each sample has data for zero, one or multiple modalities. 
 A sample can be defined as anything from a cell line culture to an individual patient, depending on the context.
+
+The central idea is to use the sample mapping to easily filter the `MultiAssayExperiment` based on the samples of interest.
+For example, a user can call [`multifilter`](@ref) to only keep the columns of each `SummarizedExperiment` that correspond to desired samples via the sample mapping.
+This facilitates coordination across multiple modalities without needing to manually subset each experiment.
+We also store sample-level annotations in a sample data `DataFrame`,
+where they can be easily attached to the `coldata` of a `SummarizedExperiment` for further analyses.
 
 This implementation makes a few changes from the original Bioconductor implementation.
 We do not consider the `MultiAssayExperiment` to contain any "columns", as this was unnecessarily confusing.
@@ -171,12 +172,11 @@ mutable struct MultiAssayExperiment
 
     The `samplemap` table is expected to have 3 `Vector{String}` columns - `sample`, `experiment` and `colname` -
     specifying the correspondence between each conceptual sample and the columns of a particular `SummarizedExperiment`.
-    Values in the `sample` column will be cross-referenced to values in the `name` column of the `sampledata`;
-    values in the `experiment` column will be cross-referenced to the keys of `experiments`;
-    and the `colname` column will be cross-referenced to the column names of each `SummarizedExperiment`.
-    Note that values in the columns need not have a 1:1 match to their cross-referenced target; 
-    any missing values in one or the other will be ignored in the methods.
-    Rows of the table should be unique.
+    See [`setsamplemap!`](@ref) for more details on the expected format.
+
+    Note that values in the `samplemap` columns need not have a 1:1 match to their cross-referenced target; 
+    any values unique to one or the other will be ignored in methods like [`expandsampledata`](@ref) and [`filtersamplemap`](@ref).
+    This allows users to flexibly manipulate the object without constantly hitting validity checks.
 
     The `metadata` stores other annotations unrelated to the samples.
 

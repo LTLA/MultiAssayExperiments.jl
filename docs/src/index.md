@@ -1,4 +1,4 @@
-# SummarizedExperiments for Julia
+# MultiAssayExperiments for Julia
 
 ## Quick start
 

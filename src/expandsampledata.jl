@@ -13,8 +13,11 @@ If `colnames` is not supplied, each row of the returned `DataFrame` corresponds 
 An error is raised if the requested columns do not have a matching sample in `samplemap(x)`. 
 Use [`dropunused`](@ref) to remove unused columns from each experiment prior to calling this function.
 
-A warning is raised if the `sampledata(x)` contains duplicate sample names.
+A warning is raised if `sampledata(x)` contains duplicate sample names.
 In such cases, data is taken from the first entry for each sample.
+
+A warning is raised if `samplemap(x)` contains multiple occurrences of the same experiment/colname combination with a different sample.
+In such cases, the first occurrence of the combination is used.
 
 # Examples
 ```jldoctest
@@ -57,7 +60,13 @@ function expandsampledata(x::MultiAssayExperiment, exp::String, colnames::Vector
     collated = Dict{String,String}()
     for r in eachrow(sm)
         if r.experiment == exp
-            collated[r.colname] = r.sample
+            if haskey(collated, r.colname)
+                if collated[r.colname] != r.sample
+                    @warn "multiple rows in 'samplemap(x)' for '" * sample * "' in '" * exp * "', using the first only"
+                end
+            else 
+                collated[r.colname] = r.sample
+            end
         end
     end
 
