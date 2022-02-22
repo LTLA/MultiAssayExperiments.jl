@@ -51,7 +51,7 @@ julia> expandsampledata(x, "foo", ["foo2", "foo1"])
 ```
 """
 function expandsampledata(x::MultiAssayExperiment, exp::String)
-    names = SummarizedExperiments.coldata(experiment(x))[!,"name"]
+    names = SummarizedExperiments.coldata(experiment(x, exp))[!,"name"]
     return expandsampledata(x, exp, names)
 end
 
