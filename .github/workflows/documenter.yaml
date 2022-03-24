@@ -15,8 +15,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up Julia
         uses: julia-actions/setup-julia@latest
-      - name: Install unregistered dependencies
-        run: julia --project=docs/ -e 'using Pkg; Pkg.add(url="https://github.com/LTLA/SummarizedExperiments.jl")'
+#      - name: Install unregistered dependencies
+#        run: julia --project=docs/ -e 'using Pkg; Pkg.add(url="https://github.com/LTLA/SummarizedExperiments.jl")'
       - name: Install registered dependencies
         run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - name: Build and deploy
