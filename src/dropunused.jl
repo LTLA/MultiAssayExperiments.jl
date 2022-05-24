@@ -1,7 +1,3 @@
-export dropunused, dropunused!
-import DataFrames
-import SummarizedExperiments
-
 """
     dropunused!(x; samples = true, experiments = true, colnames = true, mapping = true)
 
@@ -39,7 +35,7 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
         sampset = Set(sm[!,"sample"])
         allcolnames = Dict{AbstractString,Set{<:String}}()
         for (k, v) in x.experiments
-            allcolnames[k] = Set(SummarizedExperiments.coldata(v)[!,"name"])
+            allcolnames[k] = Set(coldata(v)[!,"name"])
         end
 
         filterfun = function(row)
@@ -91,7 +87,7 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
         end
 
         for (k, v) in x.experiments
-            names = SummarizedExperiments.coldata(v)[!,"name"]
+            names = coldata(v)[!,"name"]
             valid = valid_colnames[k]
 
             keep = Vector{Bool}(undef, length(names))

@@ -1,5 +1,3 @@
-export filtersamplemap, filtersamplemap!
-
 """
     filtersamplemap(x; samples = nothing, experiments = nothing, colnames = nothing)
 

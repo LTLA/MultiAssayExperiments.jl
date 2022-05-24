@@ -1,5 +1,3 @@
-export multifilter, multifilter!
-
 """
     multifilter!(x; samples = nothing, experiments = nothing, colnames = nothing)
 

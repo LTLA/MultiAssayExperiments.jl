@@ -1,8 +1,3 @@
-export experiments, experiment, sampledata, samplemap, metadata
-import DataStructures
-import DataFrames
-import SummarizedExperiments
-
 """
     experiments(x)
 
@@ -101,9 +96,9 @@ function experiment(x::MultiAssayExperiment, i::Int; sampledata = false)
             else
                 sd = expandsampledata(x, key)
                 val2 = copy(val)
-                cd = copy(SummarizedExperiments.coldata(val2))
+                cd = copy(coldata(val2))
                 safely_add_columns!(cd, sd, key)
-                SummarizedExperiments.setcoldata!(val2, cd)
+                setcoldata!(val2, cd)
                 return val2
             end
         end
@@ -119,9 +114,9 @@ function experiment(x::MultiAssayExperiment, i::String; sampledata = false)
     else
         sd = expandsampledata(x, i)
         val2 = copy(val)
-        cd = copy(SummarizedExperiments.coldata(val2))
+        cd = copy(coldata(val2))
         safely_add_columns!(cd, sd, i)
-        SummarizedExperiments.setcoldata!(val2, cd)
+        setcoldata!(val2, cd)
         return val2
     end
 end

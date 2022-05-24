@@ -1,8 +1,3 @@
-import DataStructures
-import DataFrames
-import SummarizedExperiments
-export exampleobject
-
 """
     exampleobject()
 
@@ -21,15 +16,15 @@ MultiAssayExperiment object
 ```
 """
 function exampleobject() 
-    foo = SummarizedExperiments.exampleobject(100, 10)
-    cd = SummarizedExperiments.coldata(foo)
+    foo = exampleobject(100, 10)
+    cd = coldata(foo)
     cd[!,"name"] = ["foo" * string(i) for i in 1:size(foo)[2]]
 
-    bar = SummarizedExperiments.exampleobject(50, 8);
-    cd = SummarizedExperiments.coldata(bar)
+    bar = exampleobject(50, 8);
+    cd = coldata(bar)
     cd[!,"name"] = ["bar" * string(i) for i in 1:size(bar)[2]]
 
-    exp = DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}("foo" => foo, "bar" => bar);
+    exp = OrderedDict{String, SummarizedExperiment}("foo" => foo, "bar" => bar);
     
     # Creating some patients.
     disease = ["good", "bad", "good", "bad", "very bad"]
@@ -43,7 +38,7 @@ function exampleobject()
     sm = DataFrames.DataFrame(
         sample = vcat(first, second),
         experiment = vcat(repeat(["foo"], inner=size(foo)[2]), repeat(["bar"], inner=size(bar)[2])),
-        colname = vcat(SummarizedExperiments.coldata(foo)[!,"name"], SummarizedExperiments.coldata(bar)[!,"name"])
+        colname = vcat(coldata(foo)[!,"name"], coldata(bar)[!,"name"])
     )
 
     metadata = Dict{String,Any}("version" => "0.1.0")
