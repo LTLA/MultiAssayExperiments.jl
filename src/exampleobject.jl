@@ -1,5 +1,5 @@
 """
-    exampleobject()
+    MultiAssayExperiments.exampleobject()
 
 Create an example `MultiAssayExperiment` object. 
 This is to be used to improve the succinctness of examples and tests.
@@ -8,19 +8,19 @@ This is to be used to improve the succinctness of examples and tests.
 ```jldoctest
 julia> using MultiAssayExperiments 
 
-julia> x = exampleobject()
+julia> x = MultiAssayExperiments.exampleobject()
 MultiAssayExperiment object
   experiments(2): foo bar
   sampledata(2): name disease
   metadata(1): version
 ```
 """
-function exampleobject() 
-    foo = exampleobject(100, 10)
+function MultiAssayExperiments.exampleobject() 
+    foo = SummarizedExperiments.exampleobject(100, 10)
     cd = coldata(foo)
     cd[!,"name"] = ["foo" * string(i) for i in 1:size(foo)[2]]
 
-    bar = exampleobject(50, 8);
+    bar = SummarizedExperiments.exampleobject(50, 8);
     cd = coldata(bar)
     cd[!,"name"] = ["bar" * string(i) for i in 1:size(bar)[2]]
 

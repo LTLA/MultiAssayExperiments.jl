@@ -8,7 +8,7 @@ This returns a reference to the modified `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = copy(experiments(x));
 
@@ -40,7 +40,7 @@ If omitted, we set the first experiment by default.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> size(experiment(x, 2))
 (50, 8)
@@ -86,7 +86,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> sd = copy(sampledata(x));
 
@@ -132,7 +132,7 @@ This may incur warnings in methods like [`expandsampledata`](@ref).
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = samplemap(x)[1:10,:];
 
@@ -158,7 +158,7 @@ This returns a reference to the modified `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> meta = copy(metadata(x));
 

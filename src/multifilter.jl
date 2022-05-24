@@ -20,7 +20,7 @@ this can be disabled by setting `dropcolnames = false`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> multifilter!(x; samples = ["Patient2", "Patient3"], experiments = "foo")
 MultiAssayExperiment object
@@ -29,7 +29,7 @@ MultiAssayExperiment object
   metadata(1): version
 
 julia> experiment(x)
-100x6 SummarizedExperiments.SummarizedExperiment
+100x6 SummarizedExperiment
   assays(3): foo bar whee
   rownames: Gene1 Gene2 ... Gene99 Gene100
   rowdata(2): name Type
@@ -60,7 +60,7 @@ see the latter function for more details.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> multifilter(x; samples = ["Patient2", "Patient3"], experiments = "foo")
 MultiAssayExperiment object

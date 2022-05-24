@@ -16,7 +16,7 @@ If `mapping = true`, the sample mapping is filtered to remove rows that contain 
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap!(x; experiments = "bar"); # Only keeping experiment 'bar'
 
@@ -118,7 +118,7 @@ see the latter function for more details.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = filtersamplemap(x; experiments = "bar"); # Only keeping experiment 'bar'
 

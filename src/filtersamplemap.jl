@@ -22,7 +22,7 @@ A row of the sample mapping is only retained if it passes all supplied filters.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap(samplemap(x); samples = ["Patient1", "Patient2"])
 8×3 DataFrame
@@ -95,7 +95,7 @@ A reference to the modified `x` is returned.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap!(x; samples = ["Patient1", "Patient2"]);
 

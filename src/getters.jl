@@ -7,7 +7,7 @@ Return an ordered dictionary containing all experiments in the `MultiAssayExperi
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> collect(keys(experiments(x)))
 2-element Vector{String}:
@@ -39,7 +39,7 @@ If `false`, the returned object will be a reference.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> experiment(x)
 100x10 SummarizedExperiments.SummarizedExperiment
@@ -133,7 +133,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> names(sampledata(x))
 2-element Vector{String}:
@@ -162,7 +162,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> names(samplemap(x))
 3-element Vector{String}:
@@ -188,7 +188,7 @@ Return a dictionary containing the metadata from the `MultiAssayExperiment` `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> collect(keys(metadata(x)))
 1-element Vector{String}:

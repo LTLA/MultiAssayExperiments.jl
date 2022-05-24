@@ -21,7 +21,7 @@ In such cases, the first occurrence of the combination is used.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> expandsampledata(x, "foo")
 10×2 DataFrame

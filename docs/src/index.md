@@ -43,7 +43,7 @@ julia> se = experiment(mae, "bar")
   coldata(3): name Treatment Response
   metadata(1): version
 
-julia> SummarizedExperiments.coldata(experiment(mae, "bar"; sampledata = true))
+julia> coldata(experiment(mae, "bar"; sampledata = true))
 8×4 DataFrame
  Row │ name    Treatment  Response   disease  
      │ String  String     Float64    String   
@@ -189,7 +189,7 @@ expandsampledata(x::MultiAssayExperiment, exp::String)
 ```
 
 ```@docs
-exampleobject()
+example_mae_object()
 ```
 
 ## Contact

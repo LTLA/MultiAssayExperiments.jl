@@ -5,9 +5,9 @@ Return a copy of `x`, where all components are identically-same as those in `x`.
 
 # Examples
 ```jldoctest
-julia> using MultiAssayExperiments, DataFrames
+julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> x2 = copy(x);
 
@@ -46,9 +46,9 @@ Return a deep copy of `x` and all of its components.
 
 # Examples
 ```jldoctest
-julia> using MultiAssayExperiments, DataFrames
+julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> x2 = deepcopy(x);
 
