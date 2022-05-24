@@ -1,4 +1,4 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-MultiAssayExperiments = ""c9137f73-29f3-4436-b9da-846274f1d332"
+MultiAssayExperiments = "c9137f73-29f3-4436-b9da-846274f1d332"
 SummarizedExperiments = "b04b66ec-f619-4ebf-810e-cf5ccc546695"
