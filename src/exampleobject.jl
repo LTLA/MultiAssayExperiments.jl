@@ -16,11 +16,11 @@ MultiAssayExperiment object
 ```
 """
 function MultiAssayExperiments.exampleobject() 
-    foo = SummarizedExperiments.exampleobject(100, 10)
+    foo = exampleobject(100, 10)
     cd = coldata(foo)
     cd[!,"name"] = ["foo" * string(i) for i in 1:size(foo)[2]]
 
-    bar = SummarizedExperiments.exampleobject(50, 8);
+    bar = exampleobject(50, 8);
     cd = coldata(bar)
     cd[!,"name"] = ["bar" * string(i) for i in 1:size(bar)[2]]
 

@@ -1,4 +1,5 @@
 using MultiAssayExperiments
+using SummarizedExperiments
 using Documenter
 
 makedocs(

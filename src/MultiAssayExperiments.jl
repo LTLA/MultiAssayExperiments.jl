@@ -1,7 +1,7 @@
 module MultiAssayExperiments
 
-export setexperiments!, setexperiment!, setsampledata!, setsamplemap!, setmetadata!
-using SummarizedExperiments
+using Reexport
+@reexport using SummarizedExperiments
 
 include("class.jl")
 export MultiAssayExperiment
@@ -17,6 +17,7 @@ include("getters.jl")
 export experiments, experiment, sampledata, samplemap, metadata
 
 include("setters.jl")
+export setexperiments!, setexperiment!, setsampledata!, setsamplemap!, setmetadata!
 
 include("multifilter.jl")
 export multifilter, multifilter!
