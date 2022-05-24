@@ -45,14 +45,14 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
                 row.colname in allcolnames[row.experiment]
             )
         end
-        sm = DataFrames.filter(filterfun, sm)
+        sm = filter(filterfun, sm)
         x.samplemap = sm
     end
 
     # Applying filters on the samples.
     if samples
         sampset = Set(sm[!,"sample"])
-        x.sampledata = DataFrames.filter(row -> row.name in sampset, sampledata(x))
+        x.sampledata = filter(row -> row.name in sampset, sampledata(x))
     end
 
     # Applying filters on the experiments.

@@ -29,13 +29,13 @@ function MultiAssayExperiments.exampleobject()
     # Creating some patients.
     disease = ["good", "bad", "good", "bad", "very bad"]
     name = ["Patient" * string(i) for i in 1:5]
-    sd = DataFrames.DataFrame(name = name, disease = disease)
+    sd = DataFrame(name = name, disease = disease)
 
     first = repeat(name, inner = 3)[1:size(foo)[2]]
     second = repeat(name, inner = 2)
     second = second[(length(second) - size(bar)[2] + 1):length(second)]
 
-    sm = DataFrames.DataFrame(
+    sm = DataFrame(
         sample = vcat(first, second),
         experiment = vcat(repeat(["foo"], inner=size(foo)[2]), repeat(["bar"], inner=size(bar)[2])),
         colname = vcat(coldata(foo)[!,"name"], coldata(bar)[!,"name"])

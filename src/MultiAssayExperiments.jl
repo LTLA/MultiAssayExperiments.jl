@@ -3,7 +3,7 @@ module MultiAssayExperiments
 using Reexport
 @reexport using SummarizedExperiments
 @reexport using DataStructures: OrderedDict
-@reexport using DataFrames: DataFrame
+@reexport using DataFrames: DataFrame, filter
 
 include("class.jl")
 export MultiAssayExperiment
