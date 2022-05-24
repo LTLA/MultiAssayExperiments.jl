@@ -1,8 +1,5 @@
 using MultiAssayExperiments
 using Documenter
-import SummarizedExperiments
-import DataStructures
-import DataFrames
 
 makedocs(
     sitename="MultiAssayExperiments.jl",
