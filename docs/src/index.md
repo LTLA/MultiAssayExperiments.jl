@@ -119,7 +119,7 @@ samplemap(x::MultiAssayExperiment)
 ```
 
 ```@docs
-metadata(x::MultiAssayExperiment)
+MultiAssayExperiments.metadata(x::MultiAssayExperiment)
 ```
 
 ## Setters 
@@ -141,7 +141,7 @@ setsamplemap!(x::MultiAssayExperiment, value::DataFrame)
 ```
 
 ```@docs
-setmetadata!(x::MultiAssayExperiment, value::Dict{String, Any})
+MultiAssayExperiments.setmetadata!(x::MultiAssayExperiment, value::Dict{String, Any})
 ```
 
 ## Filtering
@@ -189,7 +189,7 @@ expandsampledata(x::MultiAssayExperiment, exp::String)
 ```
 
 ```@docs
-example_mae_object()
+MultiAssayExperiments.exampleobject()
 ```
 
 ## Contact
