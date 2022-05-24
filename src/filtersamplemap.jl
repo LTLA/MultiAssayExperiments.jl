@@ -55,7 +55,7 @@ julia> filtersamplemap(samplemap(x); experiments = "foo")
   10 │ Patient4  foo         foo10
 ```
 """
-function filtersamplemap(x::DataFrames.DataFrame; samples = nothing, experiments = nothing, colnames = nothing)
+function filtersamplemap(x::DataFrame; samples = nothing, experiments = nothing, colnames = nothing)
     sampfun = create_filter_function(samples)
     expfun = create_filter_function(experiments)
     colfun = create_filter_function(colnames)
