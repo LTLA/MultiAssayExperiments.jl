@@ -85,15 +85,15 @@ MultiAssayExperiment
 
 ```@docs
 MultiAssayExperiment(
-    experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment},
-    sampledata::DataFrames.DataFrame,
-    samplemap::DataFrames.DataFrame,
+    experiments::OrderedDict{String, SummarizedExperiments.SummarizedExperiment},
+    sampledata::DataFrame,
+    samplemap::DataFrame,
     metadata::Dict{String,Any} = Dict{String,Any}()
 )
 ```
 
 ```@docs
-MultiAssayExperiment(experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+MultiAssayExperiment(experiments::OrderedDict{String, SummarizedExperiment})
 ```
 
 ```@docs
@@ -125,23 +125,23 @@ metadata(x::MultiAssayExperiment)
 ## Setters 
 
 ```@docs
-setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiments.SummarizedExperiment)
+setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiment)
 ```
 
 ```@docs
-setexperiments!(x::MultiAssayExperiment, value::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+setexperiments!(x::MultiAssayExperiment, value::OrderedDict{String, SummarizedExperiment})
 ```
 
 ```@docs
-setsampledata!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+setsampledata!(x::MultiAssayExperiment, value::DataFrame)
 ```
 
 ```@docs
-setsamplemap!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+setsamplemap!(x::MultiAssayExperiment, value::DataFrame)
 ```
 
 ```@docs
-setmetadata!(x::MultiAssayExperiment, value::Dict{String,Any})
+setmetadata!(x::MultiAssayExperiment, value::Dict{String, Any})
 ```
 
 ## Filtering
@@ -151,7 +151,7 @@ filtersamplemap!(x::MultiAssayExperiment)
 ```
 
 ```@docs
-filtersamplemap(x::DataFrames.DataFrame)
+filtersamplemap(x::DataFrame)
 ```
 
 ```@docs
