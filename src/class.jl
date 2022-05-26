@@ -1,12 +1,7 @@
-export MultiAssayExperiment
-import SummarizedExperiments
-import DataStructures
-import DataFrames
-
-function harvest_all_colname(experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
-    all_names = DataStructures.OrderedSet{String}()
+function harvest_all_colname(experiments::OrderedDict{String, SummarizedExperiment})
+    all_names = OrderedSet{String}()
     for (key, val) in experiments
-        cd = SummarizedExperiments.coldata(val)
+        cd = coldata(val)
         curnames = cd[!,"name"]
 
         if !isa(curnames, AbstractVector{<:AbstractString})
@@ -71,9 +66,9 @@ We are also much more relaxed about harmonization between the experiments, sampl
 or more specifically, we don't harmonize at all, allowing greater flexibility in storage and manipulation.
 """
 mutable struct MultiAssayExperiment
-    experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}
-    sampledata::DataFrames.DataFrame
-    samplemap::DataFrames.DataFrame
+    experiments::OrderedDict{String, SummarizedExperiment}
+    sampledata::DataFrame
+    samplemap::DataFrame
     metadata::Dict{String,Any}
 
     @doc """
@@ -93,10 +88,10 @@ mutable struct MultiAssayExperiment
     ```
     """
     function MultiAssayExperiment()
-        samp = DataFrames.DataFrame(sample = Vector{String}(), experiment = Vector{String}(), colname = Vector{String}()) 
-        cd = DataFrames.DataFrame(name = Vector{String}())
+        samp = DataFrame(sample = Vector{String}(), experiment = Vector{String}(), colname = Vector{String}()) 
+        cd = DataFrame(name = Vector{String}())
         new(
-            Dict{String,SummarizedExperiments.SummarizedExperiment}(),
+            Dict{String, SummarizedExperiment}(),
             cd,
             samp, 
             Dict{String,Any}()
@@ -113,9 +108,9 @@ mutable struct MultiAssayExperiment
     ```jldoctest
     julia> using MultiAssayExperiments
 
-    julia> import SummarizedExperiments, DataStructures
+    julia> using SummarizedExperiments
 
-    julia> exp = DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}();
+    julia> exp = OrderedDict{String, SummarizedExperiment}();
 
     julia> exp["foo"] = SummarizedExperiments.exampleobject(100, 10);
 
@@ -128,11 +123,11 @@ mutable struct MultiAssayExperiment
       metadata(0):
     ```
     """
-    function MultiAssayExperiment(experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+    function MultiAssayExperiment(experiments::OrderedDict{String, SummarizedExperiment})
         # Gather all the unique column names and use them to create a column data entry.
         all_names = harvest_all_colname(experiments)
         union = [x for x in all_names]
-        dummy_cd = DataFrames.DataFrame(name = union)
+        dummy_cd = DataFrame(name = union)
 
         # Creating a dummy sample mapping.
         all_exp = Vector{String}()
@@ -142,17 +137,17 @@ mutable struct MultiAssayExperiment
             fill!(tmp, key)
             append!(all_exp, tmp)
 
-            cd = SummarizedExperiments.coldata(val)
+            cd = coldata(val)
             curnames = cd[!,"name"]
             append!(all_samp, curnames)
         end
-        mapping = DataFrames.DataFrame(sample = all_samp, experiment = all_exp, colname = copy(all_samp))
+        mapping = DataFrame(sample = all_samp, experiment = all_exp, colname = copy(all_samp))
 
         new(
             experiments, 
             dummy_cd, 
             mapping, 
-            Dict{String,Any}()
+            Dict{String, Any}()
         )
     end
 
@@ -184,20 +179,20 @@ mutable struct MultiAssayExperiment
     ```jldoctest
     julia> using MultiAssayExperiments
 
-    julia> import SummarizedExperiments, DataStructures, DataFrames;
+    julia> using SummarizedExperiments
 
-    julia> exp = DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment}();
+    julia> exp = OrderedDict{String, SummarizedExperiment}();
 
     julia> exp["foo"] = SummarizedExperiments.exampleobject(100, 2);
 
     julia> exp["bar"] = SummarizedExperiments.exampleobject(50, 5);
 
-    julia> cd = DataFrames.DataFrame(
+    julia> cd = DataFrame(
                name = ["Aaron", "Michael", "Jayaram", "Sebastien", "John"],
                disease = ["good", "bad", "good", "bad", "very bad"]
            );
 
-    julia> sm = DataFrames.DataFrame(
+    julia> sm = DataFrame(
                sample = ["Aaron", "Michael", "Aaron", "Michael", "Jayaram", "Sebastien", "John"],
                experiment = ["foo", "foo", "bar", "bar", "bar", "bar", "bar"],
                colname = ["Patient1", "Patient2", "Patient1", "Patient2", "Patient3", "Patient4", "Patient5"]
@@ -213,10 +208,10 @@ mutable struct MultiAssayExperiment
     ```
     """
     function MultiAssayExperiment(
-            experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment},
-            sampledata::DataFrames.DataFrame,
-            samplemap::DataFrames.DataFrame,
-            metadata::Dict{String,Any} = Dict{String,Any}()
+            experiments::OrderedDict{String, SummarizedExperiment},
+            sampledata::DataFrame,
+            samplemap::DataFrame,
+            metadata::Dict{String, Any} = Dict{String, Any}()
         )
 
         # Running through sanity checks.

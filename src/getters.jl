@@ -1,8 +1,3 @@
-export experiments, experiment, sampledata, samplemap, metadata
-import DataStructures
-import DataFrames
-import SummarizedExperiments
-
 """
     experiments(x)
 
@@ -12,7 +7,7 @@ Return an ordered dictionary containing all experiments in the `MultiAssayExperi
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> collect(keys(experiments(x)))
 2-element Vector{String}:
@@ -44,10 +39,10 @@ If `false`, the returned object will be a reference.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> experiment(x)
-100x10 SummarizedExperiments.SummarizedExperiment
+100x10 SummarizedExperiment
   assays(3): foo bar whee
   rownames: Gene1 Gene2 ... Gene99 Gene100
   rowdata(2): name Type
@@ -60,7 +55,7 @@ julia> experiment(x, 1); # same result
 julia> experiment(x, "foo");
 
 julia> experiment(x, "foo", sampledata = true) # add sample data
-100x10 SummarizedExperiments.SummarizedExperiment
+100x10 SummarizedExperiment
   assays(3): foo bar whee
   rownames: Gene1 Gene2 ... Gene99 Gene100
   rowdata(2): name Type
@@ -101,9 +96,9 @@ function experiment(x::MultiAssayExperiment, i::Int; sampledata = false)
             else
                 sd = expandsampledata(x, key)
                 val2 = copy(val)
-                cd = copy(SummarizedExperiments.coldata(val2))
+                cd = copy(coldata(val2))
                 safely_add_columns!(cd, sd, key)
-                SummarizedExperiments.setcoldata!(val2, cd)
+                setcoldata!(val2, cd)
                 return val2
             end
         end
@@ -119,9 +114,9 @@ function experiment(x::MultiAssayExperiment, i::String; sampledata = false)
     else
         sd = expandsampledata(x, i)
         val2 = copy(val)
-        cd = copy(SummarizedExperiments.coldata(val2))
+        cd = copy(coldata(val2))
         safely_add_columns!(cd, sd, i)
-        SummarizedExperiments.setcoldata!(val2, cd)
+        setcoldata!(val2, cd)
         return val2
     end
 end
@@ -138,7 +133,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> names(sampledata(x))
 2-element Vector{String}:
@@ -167,7 +162,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> names(samplemap(x))
 3-element Vector{String}:
@@ -193,7 +188,7 @@ Return a dictionary containing the metadata from the `MultiAssayExperiment` `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> collect(keys(metadata(x)))
 1-element Vector{String}:

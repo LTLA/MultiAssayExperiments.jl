@@ -1,7 +1,3 @@
-export dropunused, dropunused!
-import DataFrames
-import SummarizedExperiments
-
 """
     dropunused!(x; samples = true, experiments = true, colnames = true, mapping = true)
 
@@ -20,7 +16,7 @@ If `mapping = true`, the sample mapping is filtered to remove rows that contain 
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap!(x; experiments = "bar"); # Only keeping experiment 'bar'
 
@@ -39,7 +35,7 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
         sampset = Set(sm[!,"sample"])
         allcolnames = Dict{AbstractString,Set{<:String}}()
         for (k, v) in x.experiments
-            allcolnames[k] = Set(SummarizedExperiments.coldata(v)[!,"name"])
+            allcolnames[k] = Set(coldata(v)[!,"name"])
         end
 
         filterfun = function(row)
@@ -49,14 +45,14 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
                 row.colname in allcolnames[row.experiment]
             )
         end
-        sm = DataFrames.filter(filterfun, sm)
+        sm = filter(filterfun, sm)
         x.samplemap = sm
     end
 
     # Applying filters on the samples.
     if samples
         sampset = Set(sm[!,"sample"])
-        x.sampledata = DataFrames.filter(row -> row.name in sampset, sampledata(x))
+        x.sampledata = filter(row -> row.name in sampset, sampledata(x))
     end
 
     # Applying filters on the experiments.
@@ -91,7 +87,7 @@ function dropunused!(x::MultiAssayExperiment; samples = true, experiments = true
         end
 
         for (k, v) in x.experiments
-            names = SummarizedExperiments.coldata(v)[!,"name"]
+            names = coldata(v)[!,"name"]
             valid = valid_colnames[k]
 
             keep = Vector{Bool}(undef, length(names))
@@ -122,7 +118,7 @@ see the latter function for more details.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = filtersamplemap(x; experiments = "bar"); # Only keeping experiment 'bar'
 

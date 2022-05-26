@@ -1,5 +1,3 @@
-export expandsampledata
-
 """
     expandsampledata(x, experiment[, colnames])
 
@@ -23,7 +21,7 @@ In such cases, the first occurrence of the combination is used.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> expandsampledata(x, "foo")
 10×2 DataFrame
@@ -51,7 +49,7 @@ julia> expandsampledata(x, "foo", ["foo2", "foo1"])
 ```
 """
 function expandsampledata(x::MultiAssayExperiment, exp::String)
-    names = SummarizedExperiments.coldata(experiment(x, exp))[!,"name"]
+    names = coldata(experiment(x, exp))[!,"name"]
     return expandsampledata(x, exp, names)
 end
 

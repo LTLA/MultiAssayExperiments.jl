@@ -43,7 +43,7 @@ julia> se = experiment(mae, "bar")
   coldata(3): name Treatment Response
   metadata(1): version
 
-julia> SummarizedExperiments.coldata(experiment(mae, "bar"; sampledata = true))
+julia> coldata(experiment(mae, "bar"; sampledata = true))
 8×4 DataFrame
  Row │ name    Treatment  Response   disease  
      │ String  String     Float64    String   
@@ -85,15 +85,15 @@ MultiAssayExperiment
 
 ```@docs
 MultiAssayExperiment(
-    experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment},
-    sampledata::DataFrames.DataFrame,
-    samplemap::DataFrames.DataFrame,
+    experiments::OrderedDict{String, SummarizedExperiments.SummarizedExperiment},
+    sampledata::DataFrame,
+    samplemap::DataFrame,
     metadata::Dict{String,Any} = Dict{String,Any}()
 )
 ```
 
 ```@docs
-MultiAssayExperiment(experiments::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+MultiAssayExperiment(experiments::OrderedDict{String, SummarizedExperiment})
 ```
 
 ```@docs
@@ -119,29 +119,29 @@ samplemap(x::MultiAssayExperiment)
 ```
 
 ```@docs
-metadata(x::MultiAssayExperiment)
+MultiAssayExperiments.metadata(x::MultiAssayExperiment)
 ```
 
 ## Setters 
 
 ```@docs
-setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiments.SummarizedExperiment)
+setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiment)
 ```
 
 ```@docs
-setexperiments!(x::MultiAssayExperiment, value::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+setexperiments!(x::MultiAssayExperiment, value::OrderedDict{String, SummarizedExperiment})
 ```
 
 ```@docs
-setsampledata!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+setsampledata!(x::MultiAssayExperiment, value::DataFrame)
 ```
 
 ```@docs
-setsamplemap!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+setsamplemap!(x::MultiAssayExperiment, value::DataFrame)
 ```
 
 ```@docs
-setmetadata!(x::MultiAssayExperiment, value::Dict{String,Any})
+MultiAssayExperiments.setmetadata!(x::MultiAssayExperiment, value::Dict{String, Any})
 ```
 
 ## Filtering
@@ -151,7 +151,7 @@ filtersamplemap!(x::MultiAssayExperiment)
 ```
 
 ```@docs
-filtersamplemap(x::DataFrames.DataFrame)
+filtersamplemap(x::DataFrame)
 ```
 
 ```@docs
@@ -189,7 +189,7 @@ expandsampledata(x::MultiAssayExperiment, exp::String)
 ```
 
 ```@docs
-exampleobject()
+MultiAssayExperiments.exampleobject()
 ```
 
 ## Contact

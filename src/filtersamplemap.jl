@@ -1,5 +1,3 @@
-export filtersamplemap, filtersamplemap!
-
 """
     filtersamplemap(x; samples = nothing, experiments = nothing, colnames = nothing)
 
@@ -24,7 +22,7 @@ A row of the sample mapping is only retained if it passes all supplied filters.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap(samplemap(x); samples = ["Patient1", "Patient2"])
 8×3 DataFrame
@@ -57,7 +55,7 @@ julia> filtersamplemap(samplemap(x); experiments = "foo")
   10 │ Patient4  foo         foo10
 ```
 """
-function filtersamplemap(x::DataFrames.DataFrame; samples = nothing, experiments = nothing, colnames = nothing)
+function filtersamplemap(x::DataFrame; samples = nothing, experiments = nothing, colnames = nothing)
     sampfun = create_filter_function(samples)
     expfun = create_filter_function(experiments)
     colfun = create_filter_function(colnames)
@@ -97,7 +95,7 @@ A reference to the modified `x` is returned.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> filtersamplemap!(x; samples = ["Patient1", "Patient2"]);
 

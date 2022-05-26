@@ -1,8 +1,3 @@
-export setexperiments!, setexperiment!, setsampledata!, setsamplemap!, setmetadata!
-import DataStructures
-import DataFrames
-import SummarizedExperiments
-
 """
     setexperiments!(x, value)
 
@@ -13,7 +8,7 @@ This returns a reference to the modified `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = copy(experiments(x));
 
@@ -26,7 +21,7 @@ julia> collect(keys(experiments(x)))
  "bar"
 ```
 """
-function setexperiments!(x::MultiAssayExperiment, value::DataStructures.OrderedDict{String,SummarizedExperiments.SummarizedExperiment})
+function setexperiments!(x::MultiAssayExperiment, value::OrderedDict{String, SummarizedExperiment})
     x.experiments = value;
     return x
 end
@@ -45,7 +40,7 @@ If omitted, we set the first experiment by default.
 ```jldoctest
 julia> using MultiAssayExperiments;
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> size(experiment(x, 2))
 (50, 8)
@@ -58,11 +53,11 @@ julia> size(experiment(x, 2))
 (100, 10)
 ```
 """
-function setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiments.SummarizedExperiment)
+function setexperiment!(x::MultiAssayExperiment, value::SummarizedExperiment)
     return setexperiment!(x, 1, value)
 end
 
-function setexperiment!(x::MultiAssayExperiment, i::Int, value::SummarizedExperiments.SummarizedExperiment)
+function setexperiment!(x::MultiAssayExperiment, i::Int, value::SummarizedExperiment)
     counter = 1
     for key in keys(experiments(x))
         if i == counter
@@ -74,7 +69,7 @@ function setexperiment!(x::MultiAssayExperiment, i::Int, value::SummarizedExperi
     throw(BoundsError("experiment " * string(i) * " is out of range (" * length(experiments(x)) * " experiments available)"))
 end
 
-function setexperiment!(x::MultiAssayExperiment, i::String, value::SummarizedExperiments.SummarizedExperiment)
+function setexperiment!(x::MultiAssayExperiment, i::String, value::SummarizedExperiment)
     x.experiments[i] = value
     return x
 end
@@ -91,7 +86,7 @@ If `check = true`, the function will check the validity of the sample data befor
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> sd = copy(sampledata(x));
 
@@ -106,7 +101,7 @@ julia> names(sampledata(x))
  "stuff"
 ```
 """
-function setsampledata!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+function setsampledata!(x::MultiAssayExperiment, value::DataFrame)
     check_sampledata(value)
     x.sampledata = value
     return x
@@ -137,7 +132,7 @@ This may incur warnings in methods like [`expandsampledata`](@ref).
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> y = samplemap(x)[1:10,:];
 
@@ -147,7 +142,7 @@ julia> size(samplemap(x))[1]
 10
 ```
 """
-function setsamplemap!(x::MultiAssayExperiment, value::DataFrames.DataFrame)
+function setsamplemap!(x::MultiAssayExperiment, value::DataFrame)
     check_samplemap(value)
     x.samplemap = value
     return x
@@ -163,7 +158,7 @@ This returns a reference to the modified `x`.
 ```jldoctest
 julia> using MultiAssayExperiments
 
-julia> x = exampleobject();
+julia> x = MultiAssayExperiments.exampleobject();
 
 julia> meta = copy(metadata(x));
 
@@ -175,7 +170,7 @@ julia> metadata(x)["version"]
 "0.2.0"
 ```
 """
-function setmetadata!(x::MultiAssayExperiment, value::Dict{String,Any})
+function setmetadata!(x::MultiAssayExperiment, value::Dict{String, Any})
     x.metadata = value
     return x
 end
